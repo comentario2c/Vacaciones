@@ -1,8 +1,17 @@
 from fastapi import FastAPI, Depends, HTTPException
-from app.db.db import get_connection
-from app.auth.routes import router as auth_router
-from app.auth.dependiences import requiere_rol
 from fastapi.middleware.cors import CORSMiddleware
+
+# Importar funciones de crud trabajadores
+from app.crud.trabajadores.routes import router as trabajadores_router
+
+# Importar dependencias de auth
+from app.auth.dependiences import requiere_rol
+
+# Conexion a la base de datos
+from app.db.db import get_connection
+
+# Routers
+from app.auth.routes import router as auth_router
 
 app = FastAPI()
 
@@ -23,8 +32,6 @@ def test_db(conn=Depends(db_dependency)):
         return {"status": "OK"}
     raise HTTPException(500, "Error en consulta de prueba")
 
-app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
-
 @auth_router.get("/solo-admin")
 def ruta_admin(usuario=Depends(requiere_rol(["admin"]))):
     return {"msg": f"Acceso otorgado a {usuario['rol']}"}
@@ -42,3 +49,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Routers
+app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
+app.include_router(trabajadores_router, prefix="/api/trabajadores", tags=["trabajadores"])

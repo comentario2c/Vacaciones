@@ -1,0 +1,48 @@
+<!-- Contenedor principal -->
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside
+        class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-40 transform transition-transform duration-300"
+        [class.-translate-x-full]="!sidebarVisible"
+    >
+        <div class="flex items-center justify-between p-6 border-b border-gray-700">
+            <span class="text-2xl font-bold">Vacaciones Ali</span>
+            <button (click)="toggleSidebar()" class="text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="px-4 py-6 space-y-2">
+        <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/dashboard" class="block px-4 py-2 rounded hover:bg-gray-700">🏠 Dashboard</a>
+        <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/trabajadores" class="block px-4 py-2 rounded hover:bg-gray-700">👤 Trabajadores</a>
+        <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/vacaciones" class="block px-4 py-2 rounded hover:bg-gray-700">📆 Vacaciones</a>
+        <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/eventos" class="block px-4 py-2 rounded hover:bg-gray-700">📋 Eventos</a>
+        <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/configuracion" class="block px-4 py-2 rounded hover:bg-gray-700">⚙️ Configuración</a>
+        </nav>
+        <div class="p-4 border-t border-gray-700">
+            <button (click)="authService.logout()" class="w-full text-left px-4 py-2 rounded hover:bg-red-600">🚪 Cerrar sesión</button>
+        </div>
+    </aside>
+  
+    <!-- Contenido principal -->
+    <main class="flex-1 bg-gray-100 p-4 ml-0 sm:ml-0">
+      <!-- Botón hamburguesa -->
+        <button
+            *ngIf="!sidebarVisible"
+            class="text-gray-700 p-2 fixed top-4 left-4 z-50 bg-white rounded shadow sm:left-4"
+            (click)="toggleSidebar()"
+        >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        </button>
+  
+      <!-- Contenido dinámico -->
+        <div class="pt-16">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

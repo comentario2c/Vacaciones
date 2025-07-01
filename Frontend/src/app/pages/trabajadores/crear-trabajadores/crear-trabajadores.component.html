@@ -1,0 +1,35 @@
+<div class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-md mt-10">
+    <h2 class="text-2xl font-bold mb-6 text-center">Crear Trabajador</h2>
+
+    <form (ngSubmit)="crearTrabajador()" #form="ngForm" class="space-y-4">
+    <!-- RUT -->
+    <div>
+        <label for="rut" class="block mb-1 font-medium">RUT</label>
+        <input type="text" id="rut" name="rut" required [(ngModel)]="trabajador.rut"
+            class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Nombre -->
+    <div>
+        <label for="nombre" class="block mb-1 font-medium">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required [(ngModel)]="trabajador.nombre"
+            class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Fecha Contrato -->
+    <div>
+        <label for="fechaContrato" class="block mb-1 font-medium">Fecha de Contrato</label>
+        <input type="date" id="fechaContrato" name="fechaContrato" required [(ngModel)]="trabajador.fechaContrato"
+            class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Botón -->
+    <div class="pt-4">
+        <button type="submit"
+                [disabled]="!form.valid"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50">
+        Crear Trabajador
+        </button>
+    </div>
+    </form>
+</div>
