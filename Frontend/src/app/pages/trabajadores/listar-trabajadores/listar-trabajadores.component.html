@@ -1,1 +1,49 @@
-<p>listar-trabajadores works!</p>
+<div class="max-w-4xl mx-auto mt-10 p-4 bg-white shadow-md rounded-xl">
+  <!-- Título + Botón Crear -->
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">Listado de Trabajadores</h2>
+    <button
+      class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md shadow"
+      (click)="irACrearTrabajador()"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4v16m8-8H4"></path>
+      </svg>
+      Crear
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <table class="min-w-full table-auto border-collapse">
+    <thead>
+      <tr class="bg-gray-100 text-left">
+        <th class="p-2 border-b">RUT</th>
+        <th class="p-2 border-b">Nombre</th>
+        <th class="p-2 border-b">Cargo</th>
+        <th class="p-2 border-b">Fecha Contrato</th>
+        <th class="p-2 border-b text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of trabajadores" class="hover:bg-gray-50">
+        <td class="p-2 border-b">{{ t.RutTrabajador }}</td>
+        <td class="p-2 border-b">{{ t.Nombre }}</td>
+        <td class="p-2 border-b">{{ t.Cargo }}</td>
+        <td class="p-2 border-b">{{ t.FechaContrato | date }}</td>
+        <td class="p-2 border-b text-center">
+          <div class="flex justify-center gap-2">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
+                    (click)="editarTrabajador(t.RutTrabajador)">
+              ✏️ Editar
+            </button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                    (click)="eliminarTrabajador(t.RutTrabajador)">
+              🗑️ Eliminar
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

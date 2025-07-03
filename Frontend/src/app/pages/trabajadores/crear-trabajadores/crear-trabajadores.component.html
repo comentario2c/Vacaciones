@@ -5,21 +5,28 @@
     <!-- RUT -->
     <div>
         <label for="rut" class="block mb-1 font-medium">RUT</label>
-        <input type="text" id="rut" name="rut" required [(ngModel)]="trabajador.rut"
+        <input type="text" id="rut" name="rut" required [(ngModel)]="trabajador.RutTrabajador"
             class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
     <!-- Nombre -->
     <div>
         <label for="nombre" class="block mb-1 font-medium">Nombre</label>
-        <input type="text" id="nombre" name="nombre" required [(ngModel)]="trabajador.nombre"
+        <input type="text" id="nombre" name="nombre" required [(ngModel)]="trabajador.Nombre"
+            class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Cargo -->
+    <div>
+        <label for="cargo" class="block mb-1 font-medium">Cargo</label>
+        <input type="text" id="cargo" name="cargo" required [(ngModel)]="trabajador.Cargo"
             class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
     <!-- Fecha Contrato -->
     <div>
         <label for="fechaContrato" class="block mb-1 font-medium">Fecha de Contrato</label>
-        <input type="date" id="fechaContrato" name="fechaContrato" required [(ngModel)]="trabajador.fechaContrato"
+        <input type="date" id="fechaContrato" name="fechaContrato" required [(ngModel)]="trabajador.FechaContrato"
             class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
