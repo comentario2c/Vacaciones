@@ -11,9 +11,9 @@ def crear_trabajador(datos: TrabajadorCrear):
 
     try:
         cursor.execute("""
-            INSERT INTO Trabajador (RutTrabajador, Nombre, FechaContrato)
-            VALUES (%s, %s, %s)
-        """, (datos.RutTrabajador, datos.Nombre, datos.FechaContrato))
+            INSERT INTO Trabajador (RutTrabajador, Nombre, Cargo, FechaContrato)
+            VALUES (%s, %s, %s, %s)
+        """, (datos.RutTrabajador, datos.Nombre, datos.Cargo, datos.FechaContrato))
         conn.commit()
     except IntegrityError as e:
         raise ValueError("Ya existe un trabajador con ese RUT")
@@ -25,7 +25,7 @@ def obtener_trabajadores() -> list[Trabajador]:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT RutTrabajador, Nombre, FechaContrato FROM Trabajador")
+    cursor.execute("SELECT RutTrabajador, Nombre, Cargo, FechaContrato FROM Trabajador")
     resultados = cursor.fetchall()
 
     cursor.close()
@@ -46,9 +46,9 @@ def actualizar_trabajador(rut: str, datos: TrabajadorActualizar):
     try:
         cursor.execute("""
             UPDATE Trabajador
-            SET Nombre = %s, FechaContrato = %s
+            SET Nombre = %s, Cargo = %s, FechaContrato = %s
             WHERE RutTrabajador = %s
-        """, (datos.Nombre, datos.FechaContrato, rut))
+        """, (datos.Nombre, datos.Cargo, datos.FechaContrato, rut))
         conn.commit()
     except Error as e:
         raise ValueError("Error al actualizar trabajador")
@@ -74,3 +74,23 @@ def eliminar_trabajador(rut: str):
     finally:
         cursor.close()
         conn.close()
+
+def obtener_trabajador_por_rut(rut: str) -> Trabajador:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT RutTrabajador, Nombre, Cargo, FechaContrato
+        FROM Trabajador
+        WHERE RutTrabajador = %s
+    """, (rut,))
+    
+    fila = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if not fila:
+        raise ValueError("Trabajador no encontrado")
+
+    return Trabajador(**fila)

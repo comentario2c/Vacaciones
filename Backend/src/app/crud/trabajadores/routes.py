@@ -15,6 +15,8 @@ from app.crud.trabajadores.crud import actualizar_trabajador
 # Eliminar trabajador
 from app.crud.trabajadores.crud import eliminar_trabajador
 
+# Obtener trabajador por rut
+from app.crud.trabajadores.crud import obtener_trabajador_por_rut
 
 router = APIRouter()
 
@@ -43,5 +45,12 @@ def eliminar_trabajador_route(rut: str):
     try:
         eliminar_trabajador(rut)
         return {"msg": "Trabajador eliminado correctamente"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.get("/{rut}", response_model=Trabajador)
+def obtener_un_trabajador(rut: str):
+    try:
+        return obtener_trabajador_por_rut(rut)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
