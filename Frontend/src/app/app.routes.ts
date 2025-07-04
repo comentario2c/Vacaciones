@@ -7,6 +7,9 @@ import { CrearTrabajadoresComponent } from './pages/trabajadores/crear-trabajado
 import { ListarTrabajadoresComponent } from './pages/trabajadores/listar-trabajadores/listar-trabajadores.component';
 import { EditarTrabajadoresComponent } from './pages/trabajadores/editar-trabajadores/editar-trabajadores.component';
 
+// Vacaciones
+import { RegistrarVacacionesComponent } from './pages/vacaciones/registrar-vacaciones/registrar-vacaciones.component';
+
 export const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'menu', component: MenuComponent },
@@ -14,5 +17,8 @@ export const routes: Routes = [
     // Trabajadores
     { path: 'trabajadores/crear', component: CrearTrabajadoresComponent },
     { path: 'trabajadores', component: ListarTrabajadoresComponent },
-    { path: 'trabajadores/editar/:rut', component: EditarTrabajadoresComponent }
+    { path: 'trabajadores/editar/:rut', component: EditarTrabajadoresComponent },
+
+    // Vacaciones
+    { path: 'vacaciones/registrar', component: RegistrarVacacionesComponent }
 ];

@@ -1,0 +1,36 @@
+<div class="w-full bg-gray-100 p-4 rounded-xl shadow">
+  <h3 class="text-lg font-semibold text-center mb-4">
+    {{ titulo }} - {{ nombreMes }} {{ anio }}
+  </h3>
+
+  <div class="grid grid-cols-7 gap-1 text-sm text-center font-medium">
+    <div class="text-gray-500">Lunes</div>
+    <div class="text-gray-500">Martes</div>
+    <div class="text-gray-500">Miércoles</div>
+    <div class="text-gray-500">Jueves</div>
+    <div class="text-gray-500">Viernes</div>
+    <div class="text-red-500">Sábado</div>
+    <div class="text-red-500">Domingo</div>
+
+    <ng-container *ngFor="let d of diasDelMes">
+      <!-- celdas vacías -->
+      <ng-container *ngIf="d.dia === null; else diaReal">
+        <div class="h-10"></div>
+      </ng-container>
+
+      <!-- días reales -->
+      <ng-template #diaReal>
+        <div
+          class="h-10 flex items-center justify-center rounded-md border cursor-default transition"
+          [ngClass]="{
+            'bg-green-500 text-white': d.tomado,
+            'bg-gray-200 text-gray-500': !d.esLaboral && !d.tomado,
+            'bg-white hover:bg-blue-50': d.esLaboral && !d.tomado
+          }"
+        >
+          {{ d.dia }}
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
