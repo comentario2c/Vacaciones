@@ -1,1 +1,15 @@
-<p>editar-vacaciones works!</p>
+<h2 class="text-xl font-bold mb-4">Editar Vacaciones</h2>
+
+<form (ngSubmit)="actualizarVacaciones()">
+    <div class="mb-4">
+        <label for="rutTrabajador" class="block mb-1 font-medium">Trabajador</label>
+        <input type="text" [(ngModel)]="vacaciones.RutTrabajador" name="rutTrabajador" class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+    <div class="mb-4">
+        <label for="fechaInicio" class="block mb-1 font-medium">Fecha de Inicio</label>
+        <input type="date" [(ngModel)]="vacaciones.FechaInicio" name="fechaInicio" class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md">
+    Guardar cambios
+  </button>
+</form>

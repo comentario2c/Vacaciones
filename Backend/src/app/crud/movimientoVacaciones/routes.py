@@ -1,6 +1,6 @@
-from fastapi import APIRouter
-from app.crud.movimientoVacaciones.crud import obtener_movimientos, crear_movimiento, actualizar_movimiento, eliminar_movimiento, obtener_movimiento_por_id
-from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesActualizar
+from fastapi import APIRouter, Query
+from app.crud.movimientoVacaciones.crud import obtener_movimientos, crear_movimiento, actualizar_movimiento, eliminar_movimiento, obtener_movimiento_por_id, calcular_dias_disponibles
+from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesActualizar, MovimientoVacacionesEditar
 from fastapi import HTTPException
 import holidays
 from datetime import datetime
@@ -30,7 +30,7 @@ def obtener_feriados():
 # Rutas dinamicas
 
 @router.put("/{id_mov}")
-def editar_movimiento(id_mov: int, datos: MovimientoVacacionesActualizar):
+def editar_movimiento(id_mov: int, datos: MovimientoVacacionesEditar):
     try:
         actualizar_movimiento(id_mov, datos)
         return {"msg": "Movimiento actualizado correctamente"}
@@ -45,10 +45,17 @@ def eliminar_movimiento_route(id_mov: int):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-
-@router.get("/{id_mov}", response_model=MovimientoVacaciones)
+@router.get("/{id_mov}", response_model=MovimientoVacacionesEditar)
 def obtener_movimiento(id_mov: int):
     try:
         return obtener_movimiento_por_id(id_mov)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.get("/{rut}/dias-disponibles")
+def obtener_dias_disponibles(rut: str, anio: int = Query(..., description="Año en el que se quiere registrar vacaciones")):
+    try:
+        dias = calcular_dias_disponibles(rut, anio)
+        return {"RutTrabajador": rut, "Año": anio, "DiasDisponibles": dias}
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

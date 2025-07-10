@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-calendario',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './calendario.component.html',
   styleUrl: './calendario.component.css'
 })
@@ -15,6 +13,7 @@ export class CalendarioComponent implements OnChanges {
   @Input() anio: number = 2025;
   @Input() diasMarcados: number[] = [];
   @Input() titulo: string = 'Calendario';
+  @Input() feriados: string[] = [];
 
   diasDelMes: {
     dia: number | null;
@@ -23,13 +22,9 @@ export class CalendarioComponent implements OnChanges {
     tomado?: boolean;
   }[] = [];
 
-  feriados: string[] = [];
-
   ngOnChanges(_: SimpleChanges) {
     this.generarCalendario();
   }
-
-  constructor(private http: HttpClient) {}
 
   private generarCalendario() {
     this.diasDelMes = [];
@@ -39,11 +34,6 @@ export class CalendarioComponent implements OnChanges {
 
     let offset = (primerDiaMes.getDay() + 6) % 7;
     while (offset--) this.diasDelMes.push({ dia: null });
-
-    this.http.get<string[]>('http://localhost:8000/api/vacaciones/feriados').subscribe(feriados => {
-      this.feriados = feriados;
-      console.log(this.feriados);
-    });
 
     for (let i = 1; i <= diasEnMes; i++) {
       const actual = new Date(this.anio, this.mes, i);

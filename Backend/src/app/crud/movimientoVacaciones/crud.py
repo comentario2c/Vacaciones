@@ -1,5 +1,5 @@
 from app.db.db import get_connection
-from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesActualizar
+from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesActualizar, MovimientoVacacionesEditar
 from mysql.connector import IntegrityError
 
 def obtener_movimientos() -> list[MovimientoVacaciones]:
@@ -7,8 +7,8 @@ def obtener_movimientos() -> list[MovimientoVacaciones]:
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT ID_Movimiento, RutTrabajador, FechaInicio, FechaFin, DiasTomados, Observaciones
-        FROM MovimientoVacaciones
+        SELECT ID_Movimiento, RutTrabajador, NombreTrabajador, FechaInicio, FechaFin, DiasTomados, Observaciones
+        FROM VacacionesListar
     """)
     resultados = cursor.fetchall()
 
@@ -40,7 +40,7 @@ def crear_movimiento(datos: MovimientoVacacionesCrear):
         cursor.close()
         conn.close()
 
-def actualizar_movimiento(id_mov: int, datos: MovimientoVacacionesActualizar):
+def actualizar_movimiento(id_mov: int, datos: MovimientoVacacionesEditar):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -91,7 +91,7 @@ def eliminar_movimiento(id_mov: int):
         cursor.close()
         conn.close()
 
-def obtener_movimiento_por_id(id_mov: int) -> MovimientoVacaciones:
+def obtener_movimiento_por_id(id_mov: int) -> MovimientoVacacionesEditar:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -109,4 +109,46 @@ def obtener_movimiento_por_id(id_mov: int) -> MovimientoVacaciones:
     if not fila:
         raise ValueError("Movimiento no encontrado")
 
-    return MovimientoVacaciones(**fila)
+    return MovimientoVacacionesEditar(**fila)
+
+def calcular_dias_disponibles(rut: str, anio: int) -> int:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Buscar trabajador
+    cursor.execute("""
+        SELECT FechaContrato, SaldoVacaciones, AnosRestantes
+        FROM Trabajador
+        WHERE RutTrabajador = %s
+    """, (rut,))
+    trabajador = cursor.fetchone()
+
+    if not trabajador:
+        cursor.close()
+        conn.close()
+        raise ValueError("Trabajador no encontrado")
+
+    saldo = trabajador["SaldoVacaciones"]
+    años_restantes = trabajador["AnosRestantes"]
+    año_ingreso = trabajador["FechaContrato"].year
+    año_progresivo = año_ingreso + años_restantes
+
+    # Calcular días progresivos
+    dias_progresivos = 0
+    if anio >= año_progresivo:
+        dias_progresivos = 1 + ((anio - año_progresivo) // 3)
+
+    # Calcular días ya tomados en ese año
+    cursor.execute("""
+        SELECT SUM(DiasTomados) as total
+        FROM MovimientoVacaciones
+        WHERE RutTrabajador = %s AND YEAR(FechaInicio) = %s
+    """, (rut, anio))
+    fila = cursor.fetchone()
+    dias_usados = fila["total"] if fila["total"] else 0
+
+    cursor.close()
+    conn.close()
+
+    dias_disponibles = max((saldo + dias_progresivos - dias_usados), 0)
+    return dias_disponibles

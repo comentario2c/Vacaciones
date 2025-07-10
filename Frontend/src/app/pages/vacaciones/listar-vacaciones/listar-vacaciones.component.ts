@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listar-vacaciones',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './listar-vacaciones.component.html',
   styleUrl: './listar-vacaciones.component.css'
 })
@@ -38,6 +38,6 @@ export class ListarVacacionesComponent {
   }
 
   irACrearVacacion() {
-    this.router.navigate(['/vacaciones/crear']);
+    this.router.navigate(['/vacaciones/registrar']);
   }
 }
