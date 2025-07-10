@@ -17,7 +17,7 @@
       <nav class="px-4 py-6 space-y-2">
       <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/dashboard" class="block px-4 py-2 rounded hover:bg-gray-700">🏠 Dashboard</a>
       <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/trabajadores" class="block px-4 py-2 rounded hover:bg-gray-700">👤 Trabajadores</a>
-      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/vacaciones" class="block px-4 py-2 rounded hover:bg-gray-700">📆 Vacaciones</a>
+      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/vacaciones" class="block px-4 py-2 rounded hover:bg-gray-700">📆 Vacaciones</a>
       <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/eventos" class="block px-4 py-2 rounded hover:bg-gray-700">📋 Eventos</a>
       <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/configuracion" class="block px-4 py-2 rounded hover:bg-gray-700">⚙️ Configuración</a>
       </nav>

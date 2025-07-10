@@ -18,7 +18,9 @@ export class EditarTrabajadoresComponent {
     RutTrabajador: '',
     Nombre: '',
     Cargo: '',
-    FechaContrato: ''
+    FechaContrato: '',
+    AnosRestantes: 0,
+    SaldoVacaciones: 0
   };
 
   constructor(

@@ -22,6 +22,8 @@
         <th class="p-2 border-b">Nombre</th>
         <th class="p-2 border-b">Cargo</th>
         <th class="p-2 border-b">Fecha Contrato</th>
+        <th class="p-2 border-b">Años Restantes</th>
+        <th class="p-2 border-b">Saldo Vacaciones</th>
         <th class="p-2 border-b text-center">Acciones</th>
       </tr>
     </thead>
@@ -31,6 +33,8 @@
         <td class="p-2 border-b">{{ t.Nombre }}</td>
         <td class="p-2 border-b">{{ t.Cargo }}</td>
         <td class="p-2 border-b">{{ t.FechaContrato | date }}</td>
+        <td class="p-2 border-b">{{ t.AnosRestantes }}</td>
+        <td class="p-2 border-b">{{ t.SaldoVacaciones }}</td>
         <td class="p-2 border-b text-center">
           <div class="flex justify-center gap-2">
             <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"

@@ -18,7 +18,9 @@ export class CrearTrabajadoresComponent {
     Nombre: '',
     RutTrabajador: '',
     Cargo: '',
-    FechaContrato: ''
+    FechaContrato: '',
+    AnosRestantes: 0,
+    SaldoVacaciones: 0
   };
 
   constructor(private http: HttpClient, private router: Router) {}

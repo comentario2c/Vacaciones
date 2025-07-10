@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Vacaciones } from '../../../shared/models/vacaciones.models';
 import { CalendarioComponent } from '../calendario/calendario.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registrar-vacaciones',
@@ -13,8 +14,7 @@ import { CalendarioComponent } from '../calendario/calendario.component';
   styleUrl: './registrar-vacaciones.component.css'
 })
 export class RegistrarVacacionesComponent {
-  
-  // Formulario y calendario dinamico 
+  // Objetos y variables
   vacaciones: Vacaciones = {
     RutTrabajador: '',
     FechaInicio: '',
@@ -25,11 +25,49 @@ export class RegistrarVacacionesComponent {
 
   diasMesActual: number[] = [];
   diasMesSiguiente: number[] = [];
+  ultimaFechaTomada: string = '';
 
   meses: { mes: number; anio: number; dias: number[] }[] = [];
 
-  constructor(private router: Router) {}
+  trabajadores: { Nombre: string; RutTrabajador: string }[] = [];
+  busqueda: string = '';
+  trabajadorSeleccionado: string = '';
 
+  constructor(private router: Router, private http: HttpClient) {}
+
+  // ------------------------------ Barra de busqueda ------------------------------
+  cargarTrabajadores() {
+    this.http.get<{ Nombre: string; RutTrabajador: string }[]>('http://localhost:8000/api/trabajadores')
+      .subscribe(trabajadores => {
+        this.trabajadores = trabajadores;
+      });
+  }
+
+  ngOnInit() {
+    this.cargarTrabajadores();
+  }
+
+  seleccionarTrabajador(nombre: string) {
+    const trabajador = this.trabajadores.find(t => t.Nombre === nombre);
+    if (trabajador) {
+      this.vacaciones.RutTrabajador = trabajador.RutTrabajador;
+      this.trabajadorSeleccionado = trabajador.Nombre;
+      this.busqueda = trabajador.Nombre;
+    }
+  }
+
+  get trabajadoresFiltrados() {
+    const termino = this.busqueda?.toLowerCase() ?? '';
+    return this.trabajadores.filter(t =>
+      t.Nombre.toLowerCase().includes(termino)
+    );
+  }
+
+  esNombreExacto(nombre: string): boolean {
+    return this.trabajadores.some(t => t.Nombre.toLowerCase() === nombre.toLowerCase());
+  }
+
+  // ------------------------------ Calendario dinamico ------------------------------
   actualizarCalendario() {
     if (!this.vacaciones.FechaInicio || !this.vacaciones.DiasTomados) return;
 
@@ -68,12 +106,15 @@ export class RegistrarVacacionesComponent {
           this.meses.push(mesExistente);
         }
         mesExistente.dias.push(dd);
+        this.ultimaFechaTomada = aFechaISO(fecha);
         restantes--;
       }
       fecha.setDate(fecha.getDate() + 1);
     }
+    this.vacaciones.FechaFin = this.ultimaFechaTomada;
   }
 
+  // ------------------------------ Validaciones ------------------------------
   validarDiasTomados() {
     const maximo = 50;
     if (this.vacaciones.DiasTomados > maximo) {
@@ -81,12 +122,23 @@ export class RegistrarVacacionesComponent {
     }
     this.actualizarCalendario();
   }
-  
+
+  // ------------------------------ Funciones ------------------------------
   obtenerNombreMes(mes: number): string {
     return new Date(2000, mes).toLocaleString('es-CL', { month: 'long' }).replace(/^\w/, c => c.toUpperCase());
   }
 
-  // Conectar con el backend
+  // ------------------------------ Conectar con el backend ------------------------------
 
-
+  registrarVacaciones() {
+    this.http.post('http://localhost:8000/api/vacaciones/crear', this.vacaciones).subscribe({
+      next: res => {
+        console.log('Vacaciones registradas:', res);
+        this.router.navigate(['/menu']);
+      },
+      error: err => {
+        console.error('Error al registrar vacaciones:', err.error);
+      }
+    });
+  }
 }

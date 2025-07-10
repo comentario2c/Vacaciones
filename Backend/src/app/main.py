@@ -4,6 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 # Importar funciones de crud trabajadores
 from app.crud.trabajadores.routes import router as trabajadores_router
 
+# Importar funciones de crud movimiento vacaciones
+from app.crud.movimientoVacaciones.routes import router as movimiento_vacaciones_router
+
 # Importar dependencias de auth
 from app.auth.dependiences import requiere_rol
 
@@ -53,3 +56,4 @@ app.add_middleware(
 # Routers
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(trabajadores_router, prefix="/api/trabajadores", tags=["trabajadores"])
+app.include_router(movimiento_vacaciones_router, prefix="/api/vacaciones", tags=["vacaciones"])

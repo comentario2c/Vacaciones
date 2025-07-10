@@ -3,4 +3,6 @@ export interface Trabajador {
     Nombre: string;
     Cargo: string;
     FechaContrato: string;
+    AnosRestantes: number;
+    SaldoVacaciones: number;
 }
