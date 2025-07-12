@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
-from app.crud.movimientoVacaciones.crud import obtener_movimientos, crear_movimiento, actualizar_movimiento, eliminar_movimiento, obtener_movimiento_por_id, calcular_dias_disponibles
-from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesActualizar, MovimientoVacacionesEditar
+from app.crud.movimientoVacaciones.crud import obtener_movimientos, crear_movimiento, actualizar_movimiento, eliminar_movimiento, obtener_movimiento_por_id, calcular_dias_disponibles, obtener_reporte_vacaciones
+from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesEditar
 from fastapi import HTTPException
 import holidays
 from datetime import datetime
@@ -26,6 +26,10 @@ def obtener_feriados():
     años = [datetime.now().year, datetime.now().year + 1]
     feriados = holidays.country_holidays("CL", years=años)
     return [fecha.strftime("%Y-%m-%d") for fecha in feriados.keys()]
+
+@router.get("/reporte")
+def generar_reporte(anio: int = Query(..., description="Año a consultar")):
+    return obtener_reporte_vacaciones(anio)
 
 # Rutas dinamicas
 

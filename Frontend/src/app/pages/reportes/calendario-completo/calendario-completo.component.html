@@ -1,0 +1,40 @@
+<div class="max-w-full p-4">
+    <!-- Selector de año -->
+    <div class="flex items-center gap-4 mb-4">
+      <label class="font-medium">Seleccionar año:</label>
+      <input type="number" [(ngModel)]="anioSeleccionado" (change)="cargarDatos()" class="border p-1 rounded w-24">
+    </div>
+  
+    <!-- Mensaje si no hay datos -->
+    <div *ngIf="sinDatos" class="text-gray-600 italic mb-4">
+      No hay movimientos registrados para este año.
+    </div>
+  
+    <!-- Calendario -->
+    <div class="overflow-auto border rounded" *ngIf="!sinDatos">
+      <table class="min-w-full text-sm text-center border-collapse">
+        <thead>
+          <tr class="bg-gray-100 sticky top-0 z-10">
+            <th class="border px-2 py-1 text-left">Trabajador</th>
+            <th *ngFor="let dia of diasCalendario" class="border px-2 py-1">
+              {{ diaMes(dia) }}<br>
+              <span class="text-xs text-gray-500">{{ nombreMes(dia) }}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trabajador of trabajadores">
+            <td class="border px-2 py-1 text-left whitespace-nowrap font-medium">
+              {{ trabajador.nombre }}
+            </td>
+            <td *ngFor="let dia of diasCalendario" class="border px-2 py-1"
+                [ngClass]="tieneVacacionesEn(dia, trabajador) ? getColorPorCargo(trabajador.cargo) : ''">
+              <!-- Puedes poner una marca como "✔" o dejarlo vacío -->
+              {{ tieneVacacionesEn(dia, trabajador) ? 'X' : '' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

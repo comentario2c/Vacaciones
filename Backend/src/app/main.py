@@ -1,12 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-# Importar funciones de crud trabajadores
-from app.crud.trabajadores.routes import router as trabajadores_router
-
-# Importar funciones de crud movimiento vacaciones
-from app.crud.movimientoVacaciones.routes import router as movimiento_vacaciones_router
-
 # Importar dependencias de auth
 from app.auth.dependiences import requiere_rol
 
@@ -15,6 +9,9 @@ from app.db.db import get_connection
 
 # Routers
 from app.auth.routes import router as auth_router
+from app.crud.permisos.routes import router as permisos_router
+from app.crud.trabajadores.routes import router as trabajadores_router
+from app.crud.movimientoVacaciones.routes import router as movimiento_vacaciones_router
 
 app = FastAPI()
 
@@ -57,3 +54,4 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(trabajadores_router, prefix="/api/trabajadores", tags=["trabajadores"])
 app.include_router(movimiento_vacaciones_router, prefix="/api/vacaciones", tags=["vacaciones"])
+app.include_router(permisos_router, prefix="/api/permisos", tags=["permisos"])

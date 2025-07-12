@@ -8,12 +8,13 @@ from mysql.connector import Error
 def crear_trabajador(datos: TrabajadorCrear):
     conn = get_connection()
     cursor = conn.cursor()
+    Estado = True
 
     try:
         cursor.execute("""
-            INSERT INTO Trabajador (RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, SaldoVacaciones)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (datos.RutTrabajador, datos.Nombre, datos.Cargo, datos.FechaContrato, datos.AnosRestantes, datos.SaldoVacaciones))
+            INSERT INTO Trabajador (RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, SaldoVacaciones, Estado)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (datos.RutTrabajador, datos.Nombre, datos.Cargo, datos.FechaContrato, datos.AnosRestantes, datos.SaldoVacaciones, Estado))
         conn.commit()
     except IntegrityError as e:
         raise ValueError("Ya existe un trabajador con ese RUT")

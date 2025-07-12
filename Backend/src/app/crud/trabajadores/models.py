@@ -8,6 +8,7 @@ class TrabajadorCrear(BaseModel):
     FechaContrato: date
     AnosRestantes: int
     SaldoVacaciones: int
+    Estado: bool
 
 class Trabajador(BaseModel):
     RutTrabajador: str

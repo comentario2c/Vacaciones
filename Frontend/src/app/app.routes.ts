@@ -10,6 +10,7 @@ import { EditarTrabajadoresComponent } from './pages/trabajadores/editar-trabaja
 // Vacaciones
 import { RegistrarVacacionesComponent } from './pages/vacaciones/registrar-vacaciones/registrar-vacaciones.component';
 import { ListarVacacionesComponent } from './pages/vacaciones/listar-vacaciones/listar-vacaciones.component';
+import { CalendarioCompletoComponent } from './pages/reportes/calendario-completo/calendario-completo.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -22,7 +23,9 @@ export const routes: Routes = [
 
     // Vacaciones
     { path: 'vacaciones', component: ListarVacacionesComponent },
-
     { path: 'vacaciones/registrar', component: RegistrarVacacionesComponent},
     { path: 'vacaciones/editar/:id', component: RegistrarVacacionesComponent},
+
+    // Reportes
+    { path: 'reportes/calendario-completo', component: CalendarioCompletoComponent },
 ];

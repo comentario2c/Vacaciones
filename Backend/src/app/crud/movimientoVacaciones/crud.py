@@ -1,6 +1,7 @@
 from app.db.db import get_connection
 from app.crud.movimientoVacaciones.models import MovimientoVacaciones, MovimientoVacacionesCrear, MovimientoVacacionesActualizar, MovimientoVacacionesEditar
 from mysql.connector import IntegrityError
+from datetime import date, timedelta
 
 def obtener_movimientos() -> list[MovimientoVacaciones]:
     conn = get_connection()
@@ -152,3 +153,48 @@ def calcular_dias_disponibles(rut: str, anio: int) -> int:
 
     dias_disponibles = max((saldo + dias_progresivos - dias_usados), 0)
     return dias_disponibles
+
+def obtener_reporte_vacaciones(anio: int):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT T.RutTrabajador, T.Nombre, T.Cargo, M.FechaInicio, M.FechaFin
+        FROM MovimientoVacaciones M
+        JOIN Trabajador T ON M.RutTrabajador = T.RutTrabajador
+        WHERE YEAR(M.FechaInicio) = %s OR YEAR(M.FechaFin) = %s
+    """, (anio, anio))
+
+    registros = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    reporte = {}
+
+    for r in registros:
+        rut = r["RutTrabajador"]
+        nombre = r["Nombre"]
+        cargo = r["Cargo"]
+        fecha_inicio = r["FechaInicio"]
+        fecha_fin = r["FechaFin"]   
+
+        # Asegurar que solo incluya días del año solicitado
+        fecha_inicio = max(fecha_inicio, date(anio, 1, 1))
+        fecha_fin = min(fecha_fin, date(anio, 12, 31))
+
+        dias = []
+        actual = fecha_inicio
+        while actual <= fecha_fin:
+            dias.append(actual.strftime("%Y-%m-%d"))
+            actual += timedelta(days=1)
+
+        if rut not in reporte:
+            reporte[rut] = {"rut": rut, "nombre": nombre, "cargo": cargo, "dias": dias}
+        else:
+            reporte[rut]["dias"].extend(dias)
+
+    # Eliminar duplicados en los días (por si hay más de un movimiento en el año)
+    for item in reporte.values():
+        item["dias"] = sorted(list(set(item["dias"])))
+
+    return list(reporte.values())
