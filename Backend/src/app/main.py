@@ -13,6 +13,9 @@ from app.crud.permisos.routes import router as permisos_router
 from app.crud.trabajadores.routes import router as trabajadores_router
 from app.crud.movimientoVacaciones.routes import router as movimiento_vacaciones_router
 
+# Services
+from app.services.vacaciones.routes import router as vacaciones_router
+
 app = FastAPI()
 
 def db_dependency():
@@ -55,3 +58,4 @@ app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(trabajadores_router, prefix="/api/trabajadores", tags=["trabajadores"])
 app.include_router(movimiento_vacaciones_router, prefix="/api/vacaciones", tags=["vacaciones"])
 app.include_router(permisos_router, prefix="/api/permisos", tags=["permisos"])
+app.include_router(vacaciones_router, prefix="/api/calculos", tags=["calculos"])
