@@ -1,48 +1,69 @@
-<!-- Contenedor principal -->
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <aside
-      class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-40 transform transition-transform duration-300"
-      [class.-translate-x-full]="!sidebarVisible"
+<aside
+id="sidebar"
+class="fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col"
+>
+<div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+  <h2 class="text-xl font-semibold text-gray-800">Menú</h2>
+  <button
+    id="closeSidebarBtn"
+    class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none"
+    aria-label="Cerrar menú"
   >
-      <div class="flex items-center justify-between p-6 border-b border-gray-700">
-          <span class="text-2xl font-bold">Vacaciones Ali</span>
-          <button (click)="toggleSidebar()" class="text-white">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                      viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 6h16M4 12h16M4 18h16"></path>
-              </svg>
-          </button>
-      </div>
-      <nav class="px-4 py-6 space-y-2">
-      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/dashboard" class="block px-4 py-2 rounded hover:bg-gray-700">🏠 Dashboard</a>
-      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/trabajadores" class="block px-4 py-2 rounded hover:bg-gray-700">👤 Trabajadores</a>
-      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/vacaciones" class="block px-4 py-2 rounded hover:bg-gray-700">📆 Vacaciones</a>
-      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/eventos" class="block px-4 py-2 rounded hover:bg-gray-700">📋 Eventos</a>
-      <a *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])" routerLink="/admin/configuracion" class="block px-4 py-2 rounded hover:bg-gray-700">⚙️ Configuración</a>
-      </nav>
-      <div class="p-4 border-t border-gray-700">
-          <button (click)="authService.logout()" class="w-full text-left px-4 py-2 rounded hover:bg-red-600">🚪 Cerrar sesión</button>
-      </div>
-  </aside>
+    <i class="fas fa-times text-lg"></i>
+  </button>
+</div>
+<nav class="flex-1 px-4 py-6 space-y-2">
+  <button
+    type="button"
+    class="w-full flex items-center space-x-3 px-4 py-3 rounded-md text-gray-700 hover:bg-blue-600 hover:text-white transition font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+    aria-label="Trabajadores"
+    routerLink="/trabajadores"
+    *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])"
+  >
+    <i class="fas fa-users text-lg"></i>
+    <span>Trabajadores</span>
+  </button>
+  <button
+    type="button"
+    class="w-full flex items-center space-x-3 px-4 py-3 rounded-md text-gray-700 hover:bg-green-600 hover:text-white transition font-medium focus:outline-none focus:ring-2 focus:ring-green-500"
+    aria-label="Vacaciones"
+    routerLink="/vacaciones"
+    *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])"
+  >
+    <i class="fas fa-plane-departure text-lg"></i>
+    <span>Vacaciones</span>
+  </button>
+  <button
+    type="button"
+    class="w-full flex items-center space-x-3 px-4 py-3 rounded-md text-gray-700 hover:bg-yellow-600 hover:text-white transition font-medium focus:outline-none focus:ring-2 focus:ring-yellow-500"
+    aria-label="Permisos"
+    routerLink="/permisos"
+    *ngIf="rolTienePermiso(['secretaria', 'gestor', 'admin'])"
+  >
+    <i class="fas fa-file-alt text-lg"></i>
+    <span>Permisos</span>
+  </button>
+</nav>
 
-  <!-- Contenido principal -->
-  <main class="flex-1 bg-gray-100 p-4 ml-0 sm:ml-0">
-    <!-- Botón hamburguesa -->
-      <button
-          *ngIf="!sidebarVisible"
-          class="text-gray-700 p-2 fixed top-4 left-4 z-50 bg-white rounded shadow sm:left-4"
-          (click)="toggleSidebar()"
-      >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-          viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-      </button>
+<div class="px-4 py-4 border-t border-gray-200">
+    <button
+      type="button"
+      class="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-md bg-red-600 hover:bg-red-700 text-white font-semibold transition focus:outline-none focus:ring-2 focus:ring-red-500"
+      aria-label="Cerrar sesión"
+      (click)="authService.logout()"
+    >
+      <i class="fas fa-sign-out-alt text-lg"></i>
+      <span>Cerrar sesión</span>
+    </button>
+  </div>
+</aside>
 
-    <!-- Contenido dinámico -->
-      <div class="pt-16">
-          <router-outlet></router-outlet>
-      </div>
-  </main>
+<div
+id="overlay"
+class="fixed inset-0 bg-black bg-opacity-30 z-20 hidden md:hidden"
+aria-hidden="true"
+></div>
+
+<div class="flex-1 flex flex-col md:pl-64">
+    <!-- main content -->
 </div>

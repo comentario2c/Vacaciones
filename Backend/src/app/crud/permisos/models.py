@@ -1,6 +1,16 @@
 from pydantic import BaseModel
 from datetime import date
 
+class PermisosListar(BaseModel):
+    ID_Permiso: int
+    RutTrabajador: str
+    NombreTrabajador: str
+    FechaInicio: date
+    FechaFin: date
+    DiasTomados: int
+    Vacaciones: bool
+    Motivo: str
+
 class Permiso(BaseModel):
     ID_Permiso: int
     RutTrabajador: str

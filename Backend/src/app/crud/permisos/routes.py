@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from .crud import obtener_permisos, crear_permiso, actualizar_permiso, eliminar_permiso, obtener_permiso_por_id
-from .models import Permiso, PermisoCrear, PermisoActualizar
+from .models import PermisosListar, PermisoCrear, PermisoActualizar, Permiso
 
 router = APIRouter()
 
-@router.get("/", response_model=list[Permiso])
+@router.get("/", response_model=list[PermisosListar])
 def listar_permisos():
     return obtener_permisos()
 

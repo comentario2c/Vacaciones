@@ -20,7 +20,8 @@ export class CrearTrabajadoresComponent {
     Cargo: '',
     FechaContrato: '',
     AnosRestantes: 0,
-    SaldoVacaciones: 0
+    SaldoVacaciones: 0,
+    Estado: true
   };
 
   constructor(private http: HttpClient, private router: Router) {}

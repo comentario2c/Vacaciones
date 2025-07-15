@@ -5,4 +5,5 @@ export interface Trabajador {
     FechaContrato: string;
     AnosRestantes: number;
     SaldoVacaciones: number;
+    Estado: boolean;
 }

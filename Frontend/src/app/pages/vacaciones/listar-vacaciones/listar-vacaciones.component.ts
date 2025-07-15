@@ -40,4 +40,8 @@ export class ListarVacacionesComponent {
   irACrearVacacion() {
     this.router.navigate(['/vacaciones/registrar']);
   }
+
+  irAMenu() {
+    this.router.navigate(['/menu']);
+  }
 }

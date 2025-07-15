@@ -5,7 +5,7 @@
         <button
           type="button"
           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center justify-center text-sm font-medium"
-          (click)="irACrearVacacion()"
+          (click)="irACrearPermiso()"
         >
           <i class="fas fa-plus mr-2"></i> Registrar Vacaciones
         </button>
@@ -26,28 +26,32 @@
           <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Trabajador</th>
           <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Fecha Inicio</th>
           <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Fecha Fin</th>
-          <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Días</th>
+          <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Dias Tomados</th>
+          <th class="text-center text-gray-700 px-4 py-3 text-sm font-semibold">Vacaciones</th>
+          <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Motivo</th>
           <th class="text-center text-gray-700 px-4 py-3 text-sm font-semibold">Acciones</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
-        <tr *ngFor="let v of vacaciones" class="hover:bg-gray-50">
-          <td class="px-4 py-3 text-sm text-gray-900">{{ v.NombreTrabajador }}</td>
-          <td class="px-4 py-3 text-sm text-gray-900">{{ v.FechaInicio | date }}</td>
-          <td class="px-4 py-3 text-sm text-gray-900">{{ v.FechaFin | date }}</td>
-          <td class="px-4 py-3 text-sm text-gray-900">{{ v.DiasTomados }}</td>
+        <tr *ngFor="let p of permisos" class="hover:bg-gray-50">
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.NombreTrabajador }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.FechaInicio | date }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.FechaFin | date }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.DiasTomados }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.Vacaciones ? 'Si' : 'No' }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.Motivo }}</td>
           <td class="px-4 py-3 text-center space-x-2">
             <button
               type="button"
               class="text-blue-600 hover:text-blue-800"
-              (click)="editarVacacion(v.ID_Movimiento)"
+              (click)="editarPermiso(p.ID_Permiso)"
             >
               <i class="fas fa-edit"></i>
             </button>
             <button
               type="button"
               class="text-red-600 hover:text-red-800"
-              (click)="eliminarVacacion(v.ID_Movimiento)"
+              (click)="eliminarPermiso(p.ID_Permiso)"
             >
               <i class="fas fa-trash-alt"></i>
             </button>

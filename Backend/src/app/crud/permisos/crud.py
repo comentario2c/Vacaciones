@@ -1,17 +1,17 @@
-from .models import Permiso, PermisoCrear, PermisoActualizar
+from .models import PermisosListar, PermisoCrear, PermisoActualizar, Permiso
 from app.db.db import get_connection
 
-def obtener_permisos() -> list[Permiso]:
+def obtener_permisos() -> list[PermisosListar]:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM Permisos WHERE Vacaciones = TRUE")  # Si se decide mostrar solo esos
+    cursor.execute("SELECT ID_Permiso, RutTrabajador, NombreTrabajador, FechaInicio, FechaFin, DiasTomados, Vacaciones, Motivo FROM PermisosListar")
     resultados = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
-    return [Permiso(**fila) for fila in resultados]
+    return [PermisosListar(**fila) for fila in resultados]
 
 def crear_permiso(permiso: PermisoCrear):
     conn = get_connection()

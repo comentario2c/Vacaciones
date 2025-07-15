@@ -1,53 +1,62 @@
-<div class="max-w-4xl mx-auto mt-10 p-4 bg-white shadow-md rounded-xl">
-  <!-- Título + Botón Crear -->
-  <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold">Listado de Trabajadores</h2>
-    <button
-      class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md shadow"
-      (click)="irACrearTrabajador()"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-           viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 4v16m8-8H4"></path>
-      </svg>
-      Crear
-    </button>
-  </div>
-
-  <!-- Tabla -->
-  <table class="min-w-full table-auto border-collapse">
-    <thead>
-      <tr class="bg-gray-100 text-left">
-        <th class="p-2 border-b">RUT</th>
-        <th class="p-2 border-b">Nombre</th>
-        <th class="p-2 border-b">Cargo</th>
-        <th class="p-2 border-b">Fecha Contrato</th>
-        <th class="p-2 border-b">Años Restantes</th>
-        <th class="p-2 border-b">Saldo Vacaciones</th>
-        <th class="p-2 border-b text-center">Acciones</th>
+<div>
+  <header class="bg-white shadow p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-3 sm:mb-0">Listado de Trabajadores</h1>
+    <div class="flex space-x-2">
+      <button
+        type="button"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center justify-center text-sm font-medium"
+        (click)="irACrearTrabajador()"
+      >
+        <i class="fas fa-plus mr-2"></i> Nuevo Trabajador
+      </button>
+      <button
+        type="button"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md flex items-center justify-center text-sm font-medium"
+        (click)="irAMenu()"
+      >
+        <i class="fas fa-arrow-left mr-2"></i> Regresar al menú
+      </button>
+    </div>
+  </header>
+</div>
+<main class="flex-grow p-4 overflow-x-auto">
+  <table class="min-w-full bg-white rounded-md shadow overflow-hidden">
+    <thead class="bg-gray-100 border-b border-gray-300">
+      <tr>
+        <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">RUT</th>
+        <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Nombre</th>
+        <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Cargo</th>
+        <th class="text-left text-gray-700 px-4 py-3 text-sm font-semibold">Fecha Contrato</th>
+        <th class="text-right text-gray-700 px-4 py-3 text-sm font-semibold">Años Restantes</th>
+        <th class="text-right text-gray-700 px-4 py-3 text-sm font-semibold">Saldo Vacaciones</th>
+        <th class="text-center text-gray-700 px-4 py-3 text-sm font-semibold">Acciones</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="divide-y divide-gray-200">
       <tr *ngFor="let t of trabajadores" class="hover:bg-gray-50">
-        <td class="p-2 border-b">{{ t.RutTrabajador }}</td>
-        <td class="p-2 border-b">{{ t.Nombre }}</td>
-        <td class="p-2 border-b">{{ t.Cargo }}</td>
-        <td class="p-2 border-b">{{ t.FechaContrato | date }}</td>
-        <td class="p-2 border-b">{{ t.AnosRestantes }}</td>
-        <td class="p-2 border-b">{{ t.SaldoVacaciones }}</td>
-        <td class="p-2 border-b text-center">
-          <div class="flex justify-center gap-2">
-            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
-                    (click)="editarTrabajador(t.RutTrabajador)">
-              ✏️ Editar
-            </button>
-            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
-                    (click)="eliminarTrabajador(t.RutTrabajador)">
-              🗑️ Eliminar
-            </button>
-          </div>
+        <td class="px-4 py-3 text-sm text-gray-900">{{ t.RutTrabajador }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900">{{ t.Nombre }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900">{{ t.Cargo }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900">{{ t.FechaContrato | date }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900 text-right">{{ t.AnosRestantes }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900 text-right">{{ t.SaldoVacaciones }}</td>
+        <td class="px-4 py-3 text-center space-x-2">
+          <button
+            type="button"
+            class="text-blue-600 hover:text-blue-800"
+            (click)="editarTrabajador(t.RutTrabajador)"
+          >
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            type="button"
+            class="text-red-600 hover:text-red-800"
+            (click)="eliminarTrabajador(t.RutTrabajador)"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
-</div>
+</main>

@@ -11,6 +11,9 @@ import { EditarTrabajadoresComponent } from './pages/trabajadores/editar-trabaja
 import { RegistrarVacacionesComponent } from './pages/vacaciones/registrar-vacaciones/registrar-vacaciones.component';
 import { ListarVacacionesComponent } from './pages/vacaciones/listar-vacaciones/listar-vacaciones.component';
 import { CalendarioCompletoComponent } from './pages/reportes/calendario-completo/calendario-completo.component';
+import { RegistrarPermisosComponent } from './pages/permisos/registrar-permisos/registrar-permisos.component';
+import { ListarPermisosComponent } from './pages/permisos/listar-permisos/listar-permisos.component';
+import { EditarPermisosComponent } from './pages/permisos/editar-permisos/editar-permisos.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -25,6 +28,11 @@ export const routes: Routes = [
     { path: 'vacaciones', component: ListarVacacionesComponent },
     { path: 'vacaciones/registrar', component: RegistrarVacacionesComponent},
     { path: 'vacaciones/editar/:id', component: RegistrarVacacionesComponent},
+
+    // Permisos
+    { path: 'permisos', component: ListarPermisosComponent },
+    { path: 'permisos/registrar', component: RegistrarPermisosComponent },
+    { path: 'permisos/editar/:id', component: EditarPermisosComponent },
 
     // Reportes
     { path: 'reportes/calendario-completo', component: CalendarioCompletoComponent },

@@ -39,4 +39,8 @@ export class ListarTrabajadoresComponent {
         error: (err) => console.error('Error al eliminar trabajador', err)
       });
   }
+
+  irAMenu() {
+    this.router.navigate(['/menu']);
+  }
 }
