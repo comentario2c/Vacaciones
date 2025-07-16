@@ -13,7 +13,6 @@ import { ListarVacacionesComponent } from './pages/vacaciones/listar-vacaciones/
 import { CalendarioCompletoComponent } from './pages/reportes/calendario-completo/calendario-completo.component';
 import { RegistrarPermisosComponent } from './pages/permisos/registrar-permisos/registrar-permisos.component';
 import { ListarPermisosComponent } from './pages/permisos/listar-permisos/listar-permisos.component';
-import { EditarPermisosComponent } from './pages/permisos/editar-permisos/editar-permisos.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -32,7 +31,7 @@ export const routes: Routes = [
     // Permisos
     { path: 'permisos', component: ListarPermisosComponent },
     { path: 'permisos/registrar', component: RegistrarPermisosComponent },
-    { path: 'permisos/editar/:id', component: EditarPermisosComponent },
+    { path: 'permisos/editar/:id', component: RegistrarPermisosComponent },
 
     // Reportes
     { path: 'reportes/calendario-completo', component: CalendarioCompletoComponent },

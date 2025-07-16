@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { Trabajador } from '../../../shared/models/trabajador.models';
 
 @Component({

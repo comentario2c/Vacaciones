@@ -21,7 +21,7 @@ def calcular_dias_pendientes(rut: str, anio: int) -> int:
     fecha_contrato = trabajador["FechaContrato"]
     saldo = trabajador["SaldoVacaciones"]
 
-    año_inicio = fecha_contrato.year
+    año_inicio = fecha_contrato.year + 1
 
     # Sumar todos los días tomados en años anteriores al de consulta
     cursor.execute("""

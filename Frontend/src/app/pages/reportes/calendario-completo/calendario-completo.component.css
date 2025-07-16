@@ -1,0 +1,14 @@
+@media print {
+    #contenedor-calendario {
+      overflow: visible !important;
+    }
+  }
+
+#contenedor-calendario {
+    width: fit-content;      /* Ajusta al ancho real del contenido */
+    overflow: visible !important; /* Evita el scroll oculto */
+}
+
+table {
+    table-layout: auto !important; /* Asegura que las columnas usen su contenido */
+}

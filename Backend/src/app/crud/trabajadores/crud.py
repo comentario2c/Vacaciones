@@ -26,7 +26,7 @@ def obtener_trabajadores() -> list[Trabajador]:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, SaldoVacaciones FROM Trabajador")
+    cursor.execute("SELECT RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, SaldoVacaciones FROM Trabajador WHERE Estado = True")
     resultados = cursor.fetchall()
 
     cursor.close()
@@ -68,10 +68,10 @@ def eliminar_trabajador(rut: str):
         raise ValueError("Trabajador no encontrado")
 
     try:
-        cursor.execute("DELETE FROM Trabajador WHERE RutTrabajador = %s", (rut,))
+        cursor.execute("UPDATE Trabajador SET Estado = FALSE WHERE RutTrabajador = %s", (rut,))
         conn.commit()
     except Error:
-        raise ValueError("Error al eliminar trabajador")
+        raise ValueError("Error al marcar como inactivo al trabajador")
     finally:
         cursor.close()
         conn.close()

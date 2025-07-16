@@ -36,6 +36,8 @@ export class RegistrarVacacionesComponent {
   busqueda: string = '';
   trabajadorSeleccionado: string = '';
 
+  advertenciaDiasSuperados: boolean = false;
+
   constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -145,6 +147,11 @@ export class RegistrarVacacionesComponent {
     if (this.vacaciones.DiasTomados > maximo) {
       this.vacaciones.DiasTomados = maximo;
     }
+  
+    if (this.diasDisponibles !== null) {
+      this.advertenciaDiasSuperados = this.vacaciones.DiasTomados > this.diasDisponibles;
+    }
+  
     this.actualizarCalendario();
   }
 
@@ -187,5 +194,9 @@ export class RegistrarVacacionesComponent {
         console.error('Error al guardar vacaciones:', err.error);
       }
     });
+  }
+  onDiasDisponiblesChange(dias: number) {
+    this.diasDisponibles = dias;
+    this.advertenciaDiasSuperados = this.vacaciones.DiasTomados > dias;
   }
 }
