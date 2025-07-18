@@ -12,6 +12,7 @@ from app.auth.routes import router as auth_router
 from app.crud.permisos.routes import router as permisos_router
 from app.crud.trabajadores.routes import router as trabajadores_router
 from app.crud.movimientoVacaciones.routes import router as movimiento_vacaciones_router
+from app.crud.feriados.routes import router as feriados
 
 # Services
 from app.services.vacaciones.routes import router as vacaciones_router
@@ -59,3 +60,4 @@ app.include_router(trabajadores_router, prefix="/api/trabajadores", tags=["traba
 app.include_router(movimiento_vacaciones_router, prefix="/api/vacaciones", tags=["vacaciones"])
 app.include_router(permisos_router, prefix="/api/permisos", tags=["permisos"])
 app.include_router(vacaciones_router, prefix="/api/calculos", tags=["calculos"])
+app.include_router(feriados, prefix="/api/feriados", tags=["feriados"])

@@ -1,42 +1,63 @@
-from datetime import datetime
+from datetime import date
 from app.db.db import get_connection
+from app.services.vacaciones.configuracion.logica import obtener_configuracion_vacaciones
+from app.services.vacaciones.dias_base.logica import obtener_dias_base
+from app.services.vacaciones.progresivos.logica import obtener_dias_progresivos_totales
 
-def calcular_dias_pendientes(rut: str, anio: int) -> int:
+def obtener_dias_pendientes(RutTrabajador: str, anio_objetivo: int) -> int:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Obtener fecha de contrato y saldo base
-    cursor.execute("""
-        SELECT FechaContrato, SaldoVacaciones
-        FROM Trabajador
-        WHERE RutTrabajador = %s
-    """, (rut,))
-    trabajador = cursor.fetchone()
+    try:
+        # Obtener datos base
+        cursor.execute("""
+            SELECT FechaContrato
+            FROM Trabajador
+            WHERE RutTrabajador = %s AND Estado = true
+        """, (RutTrabajador,))
+        trabajador = cursor.fetchone()
+        if not trabajador:
+            raise ValueError(f"Trabajador {RutTrabajador} no encontrado o inactivo")
+        
+        fecha_contrato = trabajador["FechaContrato"]
+        anio_inicio = fecha_contrato.year + 1  # primer año en que podría haber generado días
+        anios_previos = range(anio_inicio, anio_objetivo)
 
-    if not trabajador:
+        # Cargar config una vez
+        config = obtener_configuracion_vacaciones()
+
+        # Calcular días otorgados en años anteriores
+        otorgados = 0
+        for anio in anios_previos:
+            otorgados += obtener_dias_base(RutTrabajador, anio)
+            otorgados += obtener_dias_progresivos_totales(RutTrabajador, anio)
+
+        # Calcular días usados hasta el 31 de diciembre del año anterior
+        fecha_limite = date(anio_objetivo - 1, 12, 31)
+        cursor.execute("""
+            SELECT FechaInicio, FechaFin
+            FROM MovimientoVacaciones
+            WHERE RutTrabajador = %s AND FechaInicio <= %s
+        """, (RutTrabajador, fecha_limite))
+        movimientos = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT FechaInicio, FechaFin
+            FROM Permisos
+            WHERE RutTrabajador = %s AND FechaInicio <= %s AND ConCargoVacaciones = true
+        """, (RutTrabajador, fecha_limite))
+        permisos = cursor.fetchall()
+
+        # Sumar días hábiles tomados
+        from app.utils.dias_habiles import contar_dias_habiles  # asumirás que tienes esta función
+
+        usados = 0
+        for mov in movimientos + permisos:
+            usados += contar_dias_habiles(mov["FechaInicio"], mov["FechaFin"])
+
+        pendientes = max(0, otorgados - usados)
+        return pendientes
+
+    finally:
         cursor.close()
         conn.close()
-        raise ValueError("Trabajador no encontrado")
-
-    fecha_contrato = trabajador["FechaContrato"]
-    saldo = trabajador["SaldoVacaciones"]
-
-    año_inicio = fecha_contrato.year + 1
-
-    # Sumar todos los días tomados en años anteriores al de consulta
-    cursor.execute("""
-        SELECT SUM(DiasTomados) AS total
-        FROM MovimientoVacaciones
-        WHERE RutTrabajador = %s AND YEAR(FechaInicio) < %s
-    """, (rut, anio))
-    fila = cursor.fetchone()
-    dias_usados = fila["total"] if fila["total"] else 0
-
-    años_completos = max(anio - año_inicio, 0)
-    dias_generados = saldo * años_completos
-
-    pendientes = max(dias_generados - dias_usados, 0)
-
-    cursor.close()
-    conn.close()
-    return pendientes

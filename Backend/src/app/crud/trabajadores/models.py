@@ -1,26 +1,19 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from datetime import date
 
-class TrabajadorCrear(BaseModel):
-    RutTrabajador: str = Field(min_length=7, max_length=9)
-    Nombre: str = Field(min_length=1, max_length=50)
-    Cargo: str = Field(min_length=1, max_length=50)
+class TrabajadorBase(BaseModel):
+    Nombre: str
     FechaContrato: date
     AnosRestantes: int
-    SaldoVacaciones: int
+    Cargo: str
+    DiasProgresivosBase: int
     Estado: bool
 
-class Trabajador(BaseModel):
+class TrabajadorCrear(TrabajadorBase):
     RutTrabajador: str
-    Nombre: str
-    Cargo: str
-    FechaContrato: date
-    AnosRestantes: int
-    SaldoVacaciones: int
 
-class TrabajadorActualizar(BaseModel):
-    Nombre: str
-    Cargo: str
-    FechaContrato: date
-    AnosRestantes: int
-    SaldoVacaciones: int
+class TrabajadorActualizar(TrabajadorBase):
+    pass
+
+class Trabajador(TrabajadorCrear):
+    Estado: bool
