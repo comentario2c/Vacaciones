@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8
+    container_name: vacaciones_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: vacaciones
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./Vacaciones sql.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile
+    container_name: vacaciones_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: 123456789
+      DB_NAME: vacaciones
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: vacaciones_frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
