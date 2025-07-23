@@ -5,6 +5,6 @@ export interface Permiso {
   FechaInicio: string;
   FechaFin: string;
   DiasTomados: number;
-  Vacaciones: boolean;
+  ConCargoVacaciones: boolean;
   Motivo: string;
 }

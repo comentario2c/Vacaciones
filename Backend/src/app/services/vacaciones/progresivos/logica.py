@@ -29,17 +29,23 @@ def obtener_dias_progresivos_totales(RutTrabajador: str, anio: int) -> int:
         # 2. Obtener configuración
         config = obtener_configuracion_vacaciones()
         periodo = config["periodo_entre_progresivos"]
+        anio_inicio_calculo = config["anio_inicio_calculo_pendientes"]
+
+        # No calcular si el año es anterior al inicio del sistema
+        if anio < anio_inicio_calculo:
+            return 0
 
         # 3. Antigüedad al 1 de enero del año objetivo
         referencia = date(anio, 1, 1)
-        antiguedad = calcular_antiguedad_en_anios(fecha_contrato, referencia)
+        fecha_inicio_real = max(fecha_contrato, date(anio_inicio_calculo, 1, 1))
+        antiguedad = calcular_antiguedad_en_anios(fecha_inicio_real, referencia)
 
         # 4. Progresivos ganados dentro del sistema
         if antiguedad < anos_restantes:
             nuevos = 0
         else:
-            años_extra = antiguedad - anos_restantes
-            nuevos = años_extra // periodo
+            años_post_inicio = antiguedad - anos_restantes
+            nuevos = 1 + (años_post_inicio // periodo)
 
         return progresivos_base + nuevos
 

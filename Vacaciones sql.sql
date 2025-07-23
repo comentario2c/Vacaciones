@@ -4,8 +4,9 @@ CREATE TABLE `Trabajador` (
   `Nombre` varchar(50), 
   `FechaContrato` date, # Dato que se almacenará solo para tener la información a mano
   `AnosRestantes` int, # Cantidad de años que faltan para obtener el primer dia progresivo
-  `Cargo` varchar(30), # Cargo que desempeña dentro de la empresa
+  `Cargo` varchar(100), # Cargo que desempeña dentro de la empresa
   `DiasProgresivosBase` INT DEFAULT 0, # Días progresivos acumulados antes de ingresar al sistema
+  `DiasPendientesBase` INT DEFAULT 0, # Cantidad de dias pendientes antes de ser ingresado al sistema
   `Estado` boolean # Para evitar eliminar los registros en cascada solo se oculta cambiando el estado a false
 );
 
@@ -61,6 +62,7 @@ ALTER TABLE `MovimientoVacaciones` ADD FOREIGN KEY (`RutTrabajador`) REFERENCES 
 
 ALTER TABLE `Permisos` ADD FOREIGN KEY (`RutTrabajador`) REFERENCES `Trabajador` (`RutTrabajador`);
 
+select * from trabajador
 # -------------------------------------- Proteger eliminar y Actualizar cascada --------------------------------------
 # Consultar los nombres de las claves foraneas
 SELECT CONSTRAINT_NAME 
@@ -127,8 +129,10 @@ INSERT INTO ConfiguracionVacaciones (Clave, Valor, Descripcion) VALUES
   ('DíasBaseAnuales', '15', 'Cantidad de días base por año trabajado'),
   ('AñosParaPrimerProgresivo', '10', 'Años de cotización previos para tener derecho a progresivos'),
   ('AñosParaProgresivoEmpresa', '13', 'Años en la empresa si no ha trabajado antes'),
-  ('PeriodoEntreProgresivos', '3', 'Cada cuántos años se suma un día progresivo');
+  ('PeriodoEntreProgresivos', '3', 'Cada cuántos años se suma un día progresivo'),
+  ('AnioInicioCalculoPendientes', '2025', 'Año desde el cual se comienzan a calcular los días pendientes');
 
+Select * from configuracionvacaciones
 # -------------------------------------- Vistas --------------------------------------
 CREATE OR REPLACE VIEW PermisosListar AS
 SELECT
@@ -138,7 +142,7 @@ SELECT
     p.FechaInicio,
     p.FechaFin,
     p.DiasTomados,
-    p.Vacaciones,
+    p.ConCargoVacaciones,
     p.Motivo
 FROM Permisos p
 JOIN Trabajador t ON p.RutTrabajador = t.RutTrabajador;
@@ -154,3 +158,11 @@ SELECT
   mv.Observaciones
 FROM MovimientoVacaciones mv
 JOIN Trabajador t ON mv.RutTrabajador = t.RutTrabajador;
+
+Drop table configuracionvacaciones;
+Drop table feriadosnacionales;
+Drop table logsauditoria;
+Drop table movimientovacaciones;
+Drop table permisos;
+Drop table trabajador;
+Drop table usuario;

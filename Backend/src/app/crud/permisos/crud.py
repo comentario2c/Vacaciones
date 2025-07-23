@@ -5,7 +5,7 @@ def obtener_permisos() -> list[PermisosListar]:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT ID_Permiso, RutTrabajador, NombreTrabajador, FechaInicio, FechaFin, DiasTomados, Vacaciones, Motivo FROM PermisosListar")
+    cursor.execute("SELECT ID_Permiso, RutTrabajador, NombreTrabajador, FechaInicio, FechaFin, DiasTomados, ConCargoVacaciones, Motivo FROM PermisosListar")
     resultados = cursor.fetchall()
 
     cursor.close()
@@ -18,7 +18,7 @@ def crear_permiso(permiso: PermisoCrear):
     cursor = conn.cursor()
 
     query = """
-        INSERT INTO Permisos (RutTrabajador, FechaInicio, FechaFin, DiasTomados, Vacaciones, Motivo)
+        INSERT INTO Permisos (RutTrabajador, FechaInicio, FechaFin, DiasTomados, ConCargoVacaciones, Motivo)
         VALUES (%s, %s, %s, %s, %s, %s)
     """
     valores = (
@@ -26,7 +26,7 @@ def crear_permiso(permiso: PermisoCrear):
         permiso.FechaInicio,
         permiso.FechaFin,
         permiso.DiasTomados,
-        permiso.Vacaciones,
+        permiso.ConCargoVacaciones,
         permiso.Motivo
     )
 
@@ -45,7 +45,7 @@ def actualizar_permiso(id_permiso: int, datos: PermisoActualizar):
         SET FechaInicio = %s,
             FechaFin = %s,
             DiasTomados = %s,
-            Vacaciones = %s,
+            ConCargoVacaciones = %s,
             Motivo = %s
         WHERE ID_Permiso = %s
     """
@@ -53,7 +53,7 @@ def actualizar_permiso(id_permiso: int, datos: PermisoActualizar):
         datos.FechaInicio,
         datos.FechaFin,
         datos.DiasTomados,
-        datos.Vacaciones,
+        datos.ConCargoVacaciones,
         datos.Motivo,
         id_permiso
     )
@@ -84,7 +84,7 @@ def obtener_permiso_por_id(id_permiso: int) -> Permiso:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT ID_Permiso, RutTrabajador, FechaInicio, FechaFin, DiasTomados, Vacaciones, Motivo FROM Permisos WHERE ID_Permiso = %s", (id_permiso,))
+    cursor.execute("SELECT ID_Permiso, RutTrabajador, FechaInicio, FechaFin, DiasTomados, ConCargoVacaciones, Motivo FROM Permisos WHERE ID_Permiso = %s", (id_permiso,))
     fila = cursor.fetchone()
 
     cursor.close()

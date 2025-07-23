@@ -7,6 +7,7 @@ class TrabajadorBase(BaseModel):
     AnosRestantes: int
     Cargo: str
     DiasProgresivosBase: int
+    DiasPendientesBase: int
     Estado: bool
 
 class TrabajadorCrear(TrabajadorBase):

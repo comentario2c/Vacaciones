@@ -22,7 +22,7 @@ export class RegistrarPermisosComponent {
     FechaInicio: '',
     FechaFin: '',
     DiasTomados: 0,
-    Vacaciones: false,
+    ConCargoVacaciones: false,
     Motivo: ''
   }; 
 
@@ -155,11 +155,11 @@ export class RegistrarPermisosComponent {
 
     const anio = Number(fecha.split('-')[0]);
 
-    this.http.get<{ DiasDisponibles: number }>(
-      `http://127.0.0.1:8000/api/vacaciones/${rut}/dias-disponibles?anio=${anio}`
+    this.http.get<{ total_a_planificar: number }>(
+      `http://127.0.0.1:8000/api/calculos/saldo-completo/${rut}/${anio}`
     ).subscribe({
       next: res => {
-        this.diasDisponibles = res.DiasDisponibles;
+        this.diasDisponibles = res.total_a_planificar;
       },
       error: err => {
         console.error('Error al obtener días disponibles:', err.error);

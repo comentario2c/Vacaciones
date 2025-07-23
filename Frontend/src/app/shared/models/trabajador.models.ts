@@ -4,6 +4,7 @@ export interface Trabajador {
     Cargo: string;
     FechaContrato: string;
     AnosRestantes: number;
-    SaldoVacaciones: number;
+    DiasProgresivosBase: number;
+    DiasPendientesBase: number;
     Estado: boolean;
 }

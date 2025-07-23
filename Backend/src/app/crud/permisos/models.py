@@ -8,7 +8,7 @@ class PermisosListar(BaseModel):
     FechaInicio: date
     FechaFin: date
     DiasTomados: int
-    Vacaciones: bool
+    ConCargoVacaciones: bool
     Motivo: str
 
 class Permiso(BaseModel):
@@ -17,7 +17,7 @@ class Permiso(BaseModel):
     FechaInicio: date
     FechaFin: date
     DiasTomados: int
-    Vacaciones: bool
+    ConCargoVacaciones: bool
     Motivo: str
 
 class PermisoCrear(BaseModel):
@@ -25,12 +25,12 @@ class PermisoCrear(BaseModel):
     FechaInicio: date
     FechaFin: date
     DiasTomados: int
-    Vacaciones: bool
+    ConCargoVacaciones: bool
     Motivo: str
 
 class PermisoActualizar(BaseModel):
     FechaInicio: date
     FechaFin: date
     DiasTomados: int
-    Vacaciones: bool
+    ConCargoVacaciones: bool
     Motivo: str

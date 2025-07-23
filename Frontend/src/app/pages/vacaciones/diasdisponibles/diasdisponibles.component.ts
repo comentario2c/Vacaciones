@@ -29,11 +29,11 @@ export class DiasdisponiblesComponent implements OnChanges {
   }
 
   private consultarDiasDisponibles(rut: string, anio: number) {
-    this.http.get<{ DiasDisponibles: number }>(
-      `http://127.0.0.1:8000/api/vacaciones/${rut}/dias-disponibles?anio=${anio}`
+    this.http.get<{ total_a_planificar: number }>(
+      `http://127.0.0.1:8000/api/calculos/saldo-completo/${rut}/${anio}`
     ).subscribe({
       next: res => {
-        this.diasDisponibles = res.DiasDisponibles;
+        this.diasDisponibles = res.total_a_planificar;
         this.anioConsulta = anio;
       },
       error: err => {

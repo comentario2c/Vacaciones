@@ -14,6 +14,17 @@ interface VacacionesPorTrabajador {
   dias: string[]; // fechas en formato 'YYYY-MM-DD'
 }
 
+interface SaldoCompleto {
+  rut: string;
+  anio: number;
+  vacaciones_base: number;
+  dias_progresivos: number;
+  dias_pendientes: number;
+  dias_tomados: number;
+  total_disponible: number;
+  total_a_planificar: number;
+}
+
 @Component({
   selector: 'app-calendario-completo',
   templateUrl: './calendario-completo.component.html',
@@ -39,11 +50,27 @@ export class CalendarioCompletoComponent implements OnInit {
   feriados: Set<string> = new Set();
 
   cargoColores = new Map<string, string>([
-    ['Administración', 'bg-blue-400'],
-    ['Bodega', 'bg-green-400'],
-    ['Mantenimiento', 'bg-yellow-400'],
-    ['Soldador', 'bg-red-400'],
-    ['Logística', 'bg-purple-400'],
+    // Grupo 1 – Verde menta
+    ['Bodega Grupo 1', 'bg-emerald-200'],
+    ['Operador maquina de herramienta Grupo 1', 'bg-emerald-200'],
+    ['Mecánico de banco Grupo 1', 'bg-emerald-200'],
+    ['Soladores Grupo 1', 'bg-emerald-200'],
+    ['Operador mesa de corte grupo 1', 'bg-emerald-200'],
+    ['Secretaria Grupo 1', 'bg-emerald-200'],
+  
+    // Grupo 2 – Azul cielo
+    ['Bodega Grupo 2', 'bg-sky-200'],
+    ['Operador maquina de herramienta Grupo 2', 'bg-sky-200'],
+    ['Mecánico de banco Grupo 2', 'bg-sky-200'],
+    ['Soladores Grupo 2', 'bg-sky-200'],
+    ['Secretaria Grupo 2', 'bg-sky-200'],
+  
+    // Grupo 3 – Gris cálido
+    ['Bodega Grupo 3', 'bg-zinc-200'],
+    ['Soladores Grupo 3', 'bg-zinc-200'],
+  
+    // Administrativos – Celeste claro
+    ['Administrativos', 'bg-cyan-200'],
   ]);
 
   constructor(private http: HttpClient) {}
@@ -78,7 +105,12 @@ export class CalendarioCompletoComponent implements OnInit {
           this.generarNumeracionVacaciones();
   
           if (!this.sinDatos) {
-            this.cargarValoresPorTrabajador();
+            this.trabajadores.sort((a, b) => {
+              const familiaA = this.getFamiliaCargo(a.cargo);
+              const familiaB = this.getFamiliaCargo(b.cargo);
+              return familiaA.localeCompare(familiaB);
+            });
+            this.cargarSaldosCompletos();
           }
         },
         error: (err) => {
@@ -154,27 +186,6 @@ export class CalendarioCompletoComponent implements OnInit {
     return fecha.getDate();
   }
 
-  cargarValoresPorTrabajador(): void {
-    for (const t of this.trabajadores) {
-      const rut = t.rut;
-  
-      this.http.get<number>(`http://localhost:8000/api/calculos/progresivos/${rut}/${this.anioSeleccionado}`)
-        .subscribe(data => this.progresivosPorRut[rut] = data);
-  
-      this.http.get<number>(`http://localhost:8000/api/calculos/pendientes/${rut}/${this.anioSeleccionado}`)
-        .subscribe(data => this.pendientesPorRut[rut] = data);
-  
-      this.http.get<number>(`http://localhost:8000/api/calculos/saldo/${rut}/${this.anioSeleccionado}`)
-        .subscribe(data => this.totalPorRut[rut] = data);
-  
-      this.http.get<number>(`http://localhost:8000/api/calculos/pedidos/${rut}/${this.anioSeleccionado}`)
-        .subscribe(data => this.pedidosPorRut[rut] = data);
-  
-      this.http.get<number>(`http://localhost:8000/api/calculos/saldo-total/${rut}/${this.anioSeleccionado}`)
-        .subscribe(data => this.saldoPorRut[rut] = data);
-    }
-  }
-
   generarNumeracionVacaciones(): void {
     this.numerosVacacionesPorTrabajador = {};
   
@@ -213,14 +224,38 @@ export class CalendarioCompletoComponent implements OnInit {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('l', 'mm', [300, 841]);
       const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      const margin = 10; // 10mm = 1cm
+      const usableWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+      const usableHeight = (imgProps.height * usableWidth) / imgProps.width;
   
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(imgData, 'PNG', margin, margin, usableWidth, usableHeight);
       pdf.save(`reporte-vacaciones-${this.anioSeleccionado}.pdf`);
   
       // 🔙 Restaurar el ancho original
       elemento.style.width = anchoOriginal;
     });
+  }
+
+  cargarSaldosCompletos(): void {
+    this.http.get<SaldoCompleto[]>(`http://localhost:8000/api/calculos/saldos-completos/${this.anioSeleccionado}`)
+      .subscribe({
+        next: (data) => {
+          for (const saldo of data) {
+            const rut = saldo.rut;
+            this.progresivosPorRut[rut] = saldo.dias_progresivos;
+            this.pendientesPorRut[rut] = saldo.dias_pendientes;
+            this.totalPorRut[rut] = saldo.total_disponible;
+            this.pedidosPorRut[rut] = saldo.dias_tomados;
+            this.saldoPorRut[rut] = saldo.total_a_planificar;
+          }
+        },
+        error: (err) => {
+          console.error('Error al cargar saldos completos:', err);
+        }
+      });
+  }
+
+  getFamiliaCargo(cargo: string): string {
+    return cargo.split(' Grupo')[0].trim().toLowerCase(); // Normaliza el nombre base
   }
 }

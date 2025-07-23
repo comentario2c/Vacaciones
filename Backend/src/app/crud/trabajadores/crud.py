@@ -8,9 +8,9 @@ def crear_trabajador(datos: TrabajadorCrear):
     try:
         cursor.execute("""
             INSERT INTO Trabajador (
-                RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, DiasProgresivosBase, Estado
+                RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, DiasProgresivosBase, DiasPendientesBase, Estado
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             datos.RutTrabajador,
             datos.Nombre,
@@ -18,6 +18,7 @@ def crear_trabajador(datos: TrabajadorCrear):
             datos.FechaContrato,
             datos.AnosRestantes,
             datos.DiasProgresivosBase,
+            datos.DiasPendientesBase,
             datos.Estado,
         ))
         conn.commit()
@@ -32,7 +33,7 @@ def obtener_trabajadores() -> list[Trabajador]:
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, DiasProgresivosBase, Estado
+        SELECT RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, DiasProgresivosBase, DiasPendientesBase, Estado
         FROM Trabajador
         WHERE Estado = TRUE
     """)
@@ -48,7 +49,7 @@ def obtener_trabajador_por_rut(rut: str) -> Trabajador:
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, DiasProgresivosBase, Estado
+        SELECT RutTrabajador, Nombre, Cargo, FechaContrato, AnosRestantes, DiasProgresivosBase, DiasPendientesBase, Estado
         FROM Trabajador
         WHERE RutTrabajador = %s
     """, (rut,))
@@ -80,7 +81,8 @@ def actualizar_trabajador(rut: str, datos: TrabajadorActualizar):
                 Cargo = %s,
                 FechaContrato = %s,
                 AnosRestantes = %s,
-                DiasProgresivosBase = %s
+                DiasProgresivosBase = %s,
+                DiasPendientesBase = %s
             WHERE RutTrabajador = %s
         """, (
             datos.Nombre,
@@ -88,6 +90,7 @@ def actualizar_trabajador(rut: str, datos: TrabajadorActualizar):
             datos.FechaContrato,
             datos.AnosRestantes,
             datos.DiasProgresivosBase,
+            datos.DiasPendientesBase,
             rut
         ))
         conn.commit()

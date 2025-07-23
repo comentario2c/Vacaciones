@@ -11,7 +11,7 @@ from typing import List
 
 router = APIRouter()
 
-@router.post("/trabajadores", response_model=Trabajador, tags=["Trabajadores"])
+@router.post("/crear", response_model=Trabajador, tags=["trabajadores"])
 def crear(datos: TrabajadorCrear):
     try:
         crear_trabajador(datos)
@@ -20,12 +20,12 @@ def crear(datos: TrabajadorCrear):
         raise HTTPException(status_code=400, detail=str(ve))
 
 
-@router.get("/trabajadores", response_model=List[Trabajador], tags=["Trabajadores"])
+@router.get("/", response_model=List[Trabajador], tags=["trabajadores"])
 def listar():
     return obtener_trabajadores()
 
 
-@router.get("/trabajadores/{rut}", response_model=Trabajador, tags=["Trabajadores"])
+@router.get("/{rut}", response_model=Trabajador, tags=["trabajadores"])
 def obtener(rut: str):
     try:
         return obtener_trabajador_por_rut(rut)
@@ -33,7 +33,7 @@ def obtener(rut: str):
         raise HTTPException(status_code=404, detail=str(ve))
 
 
-@router.put("/trabajadores/{rut}", tags=["Trabajadores"])
+@router.put("/{rut}", tags=["trabajadores"])
 def editar(rut: str, datos: TrabajadorActualizar):
     try:
         actualizar_trabajador(rut, datos)
@@ -42,7 +42,7 @@ def editar(rut: str, datos: TrabajadorActualizar):
         raise HTTPException(status_code=404, detail=str(ve))
 
 
-@router.delete("/trabajadores/{rut}", tags=["Trabajadores"])
+@router.delete("/{rut}", tags=["trabajadores"])
 def eliminar(rut: str):
     try:
         eliminar_trabajador(rut)

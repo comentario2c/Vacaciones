@@ -22,14 +22,19 @@ def obtener_dias_base(RutTrabajador: str, anio: int) -> int:
             raise ValueError(f"Trabajador {RutTrabajador} no encontrado o inactivo")
 
         fecha_contrato = row["FechaContrato"]
-        fecha_corte = date(anio, 1, 1)
+        config = obtener_configuracion_vacaciones()
 
+        # Si el año de cálculo es menor al año de inicio del sistema, no calcular nada
+        if anio < config["anio_inicio_calculo_pendientes"]:
+            return 0
+
+        # Validar que haya cumplido al menos 1 año antes del 1 de enero del año consultado
+        fecha_corte = date(anio, 1, 1)
         antiguedad = calcular_antiguedad_en_anios(fecha_contrato, fecha_corte)
 
         if antiguedad < 1:
-            return 0  # aún no cumple un año al 1 de enero del año objetivo
+            return 0
 
-        config = obtener_configuracion_vacaciones()
         return config["dias_base_anuales"]
 
     finally:

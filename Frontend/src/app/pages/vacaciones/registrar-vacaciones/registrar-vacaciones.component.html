@@ -26,10 +26,7 @@
                 {{ t.Nombre }}
               </li>
             </ul>
-          </div>
-          <div *ngIf="advertenciaDiasSuperados" class="text-yellow-600 font-semibold text-sm mt-1">
-            ⚠ Estás solicitando más días de los disponibles ({{ diasDisponibles }}).
-          </div>          
+          </div>        
           <!-- Fecha inicio -->
           <div>
             <label class="block mb-1 font-medium">Fecha de Inicio</label>
@@ -45,6 +42,10 @@
                    class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                    (ngModelChange)="validarDiasTomados()"/>
           </div>
+
+          <div *ngIf="advertenciaDiasSuperados" class="text-yellow-600 font-semibold text-sm mt-1">
+            ⚠ Estás solicitando más días de los disponibles ({{ diasDisponibles }}).
+          </div>  
   
           <!-- Observaciones -->
           <div>

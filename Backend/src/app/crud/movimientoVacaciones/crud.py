@@ -163,6 +163,7 @@ def obtener_reporte_vacaciones(anio: int):
         FROM MovimientoVacaciones M
         JOIN Trabajador T ON M.RutTrabajador = T.RutTrabajador
         WHERE YEAR(M.FechaInicio) = %s OR YEAR(M.FechaFin) = %s
+        ORDER BY T.Cargo ASC;
     """, (anio, anio))
 
     registros = cursor.fetchall()

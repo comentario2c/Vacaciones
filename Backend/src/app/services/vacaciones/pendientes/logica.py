@@ -1,6 +1,7 @@
 from datetime import date
 from app.db.db import get_connection
 from app.services.vacaciones.configuracion.logica import obtener_configuracion_vacaciones
+from app.services.vacaciones.configuracion.logica import obtener_configuracion_vacaciones
 from app.services.vacaciones.dias_base.logica import obtener_dias_base
 from app.services.vacaciones.progresivos.logica import obtener_dias_progresivos_totales
 
@@ -11,20 +12,24 @@ def obtener_dias_pendientes(RutTrabajador: str, anio_objetivo: int) -> int:
     try:
         # Obtener datos base
         cursor.execute("""
-            SELECT FechaContrato
+            SELECT FechaContrato, DiasPendientesBase
             FROM Trabajador
             WHERE RutTrabajador = %s AND Estado = true
         """, (RutTrabajador,))
         trabajador = cursor.fetchone()
         if not trabajador:
             raise ValueError(f"Trabajador {RutTrabajador} no encontrado o inactivo")
-        
-        fecha_contrato = trabajador["FechaContrato"]
-        anio_inicio = fecha_contrato.year + 1  # primer año en que podría haber generado días
-        anios_previos = range(anio_inicio, anio_objetivo)
 
         # Cargar config una vez
         config = obtener_configuracion_vacaciones()
+        
+        fecha_contrato = trabajador["FechaContrato"]
+        pendientes_base = int(trabajador["DiasPendientesBase"])
+        anio_inicio = max(
+            fecha_contrato.year + 1,
+            config["anio_inicio_calculo_pendientes"]  # nuevo campo traído desde la tabla
+        )
+        anios_previos = range(anio_inicio, anio_objetivo)
 
         # Calcular días otorgados en años anteriores
         otorgados = 0
@@ -55,7 +60,7 @@ def obtener_dias_pendientes(RutTrabajador: str, anio_objetivo: int) -> int:
         for mov in movimientos + permisos:
             usados += contar_dias_habiles(mov["FechaInicio"], mov["FechaFin"])
 
-        pendientes = max(0, otorgados - usados)
+        pendientes = max(0, otorgados + pendientes_base - usados)
         return pendientes
 
     finally:

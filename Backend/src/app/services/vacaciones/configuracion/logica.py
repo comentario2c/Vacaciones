@@ -13,7 +13,8 @@ def obtener_configuracion_vacaciones() -> dict:
             "DíasBaseAnuales": "dias_base_anuales",
             "AñosParaPrimerProgresivo": "anios_para_primer_progresivo",
             "AñosParaProgresivoEmpresa": "anios_para_progresivo_empresa",
-            "PeriodoEntreProgresivos": "periodo_entre_progresivos"
+            "PeriodoEntreProgresivos": "periodo_entre_progresivos",
+            "AnioInicioCalculoPendientes": "anio_inicio_calculo_pendientes"
         }
 
         for clave in claves_requeridas:

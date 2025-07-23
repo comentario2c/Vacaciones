@@ -20,7 +20,8 @@ export class EditarTrabajadoresComponent {
     Cargo: '',
     FechaContrato: '',
     AnosRestantes: 0,
-    SaldoVacaciones: 0,
+    DiasProgresivosBase: 0,
+    DiasPendientesBase: 0,
     Estado: true
   };
 

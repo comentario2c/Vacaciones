@@ -47,7 +47,7 @@
           <!-- ¿A Cuenta de vacacaciones? -->
           <div>
             <label class="block mb-1 font-medium">¿A Cuenta de Vacaciones?</label>
-            <select class="rounded-md" [(ngModel)]="permisos.Vacaciones" name="vacaciones" required
+            <select class="rounded-md" [(ngModel)]="permisos.ConCargoVacaciones" name="vacaciones" required
                     class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     (ngModelChange)="validarDiasTomados()">
               <option [ngValue]="true">Sí</option>
@@ -83,7 +83,7 @@
           [mes]="m.mes"
           [anio]="m.anio"
           [diasMarcados]="m.dias"
-          [titulo]="'Vacaciones: ' + obtenerNombreMes(m.mes) + ' ' + m.anio"
+          [titulo]="'ConCargoVacaciones: ' + obtenerNombreMes(m.mes) + ' ' + m.anio"
           [feriados]="feriados"
         ></app-calendario>
       </div>
