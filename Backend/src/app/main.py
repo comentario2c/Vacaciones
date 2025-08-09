@@ -63,3 +63,6 @@ app.include_router(permisos_router, prefix="/api/permisos", tags=["permisos"])
 app.include_router(vacaciones_router, prefix="/api/calculos", tags=["calculos"])
 app.include_router(feriados, prefix="/api/feriados", tags=["feriados"])
 app.include_router(reportes, prefix="/api/calculos", tags=["calculos"])
+
+#from app.scripts.crear_admin import crear_admin
+#crear_admin()

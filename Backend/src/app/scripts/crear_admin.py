@@ -2,8 +2,8 @@ from app.auth.hashing import hashear_password
 from app.db.db import get_connection
 
 def crear_admin():
-    email = "admin@empresa.cl"
-    password_plano = "123456"
+    email = "acontreras@ali.cl"
+    password_plano = "0355"
     rol = "admin"
 
     conn = get_connection()
