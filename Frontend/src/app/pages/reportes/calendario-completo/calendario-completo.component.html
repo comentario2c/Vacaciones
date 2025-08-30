@@ -34,14 +34,14 @@
       Planificación de Vacaciones - {{ anioSeleccionado }}
     </h1>
     <table class="min-w-full text-sm text-center border-collapse">
-      <thead class="bg-indigo-50 sticky top-0 z-20">
+      <thead class="bg-indigo-50 top-0 z-20">
         <tr>
           <th class="border sticky w-[140px] border-gray-300 px-3 py-2 text-lef left-0 bg-indigo-50 z-30 shadow-md">Trabajador</th>
-          <th class="border sticky left-[140px] w-[80px]  border-gray-300 px-2 py-2">Progresivos</th>
-          <th class="border sticky left-[220px] w-[100px] border-gray-300 px-2 py-2">Pendientes</th>
-          <th class="border sticky left-[300px] w-[80px] border-gray-300 px-2 py-2">Total</th>
-          <th class="border sticky left-[380px] w-[80px] border-gray-300 px-2 py-2">Pedidos</th>
-          <th class="border sticky left-[460px] w-[80px] border-gray-300 px-2 py-2">Saldo</th>
+          <th class="border left-[140px] w-[80px]  border-gray-300 px-2 py-2">Progresivos</th>
+          <th class="border left-[220px] w-[100px] border-gray-300 px-2 py-2">Pendientes</th>
+          <th class="border left-[300px] w-[80px] border-gray-300 px-2 py-2">Total</th>
+          <th class="border left-[380px] w-[80px] border-gray-300 px-2 py-2">Pedidos</th>
+          <th class="border left-[460px] w-[80px] border-gray-300 px-2 py-2">Saldo</th>
           <th
             *ngFor="let dia of diasCalendario"
             class="border border-gray-300 px-2 py-2 whitespace-nowrap select-none"
@@ -69,11 +69,11 @@
             <td class="border border-gray-300 px-3 py-2 text-left whitespace-nowrap font-medium bg-white z-10 shadow-sm sticky left-0">
               {{ trabajador.nombre }}
             </td>
-            <td class="border sticky left-[140px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ progresivosPorRut[trabajador.rut] ?? '-' }}</td>
-            <td class="border sticky left-[220px] w-[100px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ pendientesPorRut[trabajador.rut] ?? '-' }}</td>
-            <td class="border sticky left-[300px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ totalPorRut[trabajador.rut] ?? '-' }}</td>
-            <td class="border sticky left-[380px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ pedidosPorRut[trabajador.rut] ?? '-' }}</td>
-            <td class="border sticky left-[460px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ saldoPorRut[trabajador.rut] ?? '-' }}</td>
+            <td class="border left-[140px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ progresivosPorRut[trabajador.rut] ?? '-' }}</td>
+            <td class="border left-[220px] w-[100px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ pendientesPorRut[trabajador.rut] ?? '-' }}</td>
+            <td class="border left-[300px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ totalPorRut[trabajador.rut] ?? '-' }}</td>
+            <td class="border left-[380px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ pedidosPorRut[trabajador.rut] ?? '-' }}</td>
+            <td class="border left-[460px] w-[80px] text-gray-500 font-semibold border-gray-300 px-2 py-2">{{ saldoPorRut[trabajador.rut] ?? '-' }}</td>
             <td
               *ngFor="let dia of diasCalendario"
               class="border border-gray-300 px-2 py-2"

@@ -35,8 +35,8 @@
       <tbody class="divide-y divide-gray-200">
         <tr *ngFor="let p of permisos" class="hover:bg-gray-50">
           <td class="px-4 py-3 text-sm text-gray-900">{{ p.NombreTrabajador }}</td>
-          <td class="px-4 py-3 text-sm text-gray-900">{{ p.FechaInicio | date }}</td>
-          <td class="px-4 py-3 text-sm text-gray-900">{{ p.FechaFin | date }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.FechaInicio | date:'dd/MM/yyyy' }}</td>
+          <td class="px-4 py-3 text-sm text-gray-900">{{ p.FechaFin | date:'dd/MM/yyyy' }}</td>
           <td class="px-4 py-3 text-sm text-gray-900">{{ p.DiasTomados }}</td>
           <td class="px-4 py-3 text-sm text-gray-900">{{ p.ConCargoVacaciones ? 'Si' : 'No' }}</td>
           <td class="px-4 py-3 text-sm text-gray-900">{{ p.Motivo }}</td>

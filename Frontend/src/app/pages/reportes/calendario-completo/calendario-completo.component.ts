@@ -51,26 +51,26 @@ export class CalendarioCompletoComponent implements OnInit {
 
   cargoColores = new Map<string, string>([
     // Grupo 1 – Verde menta
-    ['Bodega Grupo 1', 'bg-emerald-200'],
-    ['Operador maquina de herramienta Grupo 1', 'bg-emerald-200'],
-    ['Mecánico de banco Grupo 1', 'bg-emerald-200'],
-    ['Soladores Grupo 1', 'bg-emerald-200'],
-    ['Operador mesa de corte grupo 1', 'bg-emerald-200'],
-    ['Secretaria Grupo 1', 'bg-emerald-200'],
+    ['Bodega Grupo 1', 'bg-[#B4C6E7]'],
+    ['Operador maquina de herramienta Grupo 1', 'bg-[#B4C6E7]'],
+    ['Mecánico de banco Grupo 1', 'bg-[#B4C6E7]'],
+    ['Soladores Grupo 1', 'bg-[#B4C6E7]'],
+    ['Operador mesa de corte grupo 1', 'bg-[#B4C6E7]'],
+    ['Secretaria Grupo 1', 'bg-[#B4C6E7]'],
   
     // Grupo 2 – Azul cielo
-    ['Bodega Grupo 2', 'bg-sky-200'],
-    ['Operador maquina de herramienta Grupo 2', 'bg-sky-200'],
-    ['Mecánico de banco Grupo 2', 'bg-sky-200'],
-    ['Soladores Grupo 2', 'bg-sky-200'],
-    ['Secretaria Grupo 2', 'bg-sky-200'],
+    ['Bodega Grupo 2', 'bg-[#A9D08E]'],
+    ['Operador maquina de herramienta Grupo 2', 'bg-[#A9D08E]'],
+    ['Mecánico de banco Grupo 2', 'bg-[#A9D08E]'],
+    ['Soladores Grupo 2', 'bg-[#A9D08E]'],
+    ['Secretaria Grupo 2', 'bg-[#A9D08E]'],
   
     // Grupo 3 – Gris cálido
-    ['Bodega Grupo 3', 'bg-zinc-200'],
-    ['Soladores Grupo 3', 'bg-zinc-200'],
+    ['Bodega Grupo 3', 'bg-[#C9C9C9]'],
+    ['Soladores Grupo 3', 'bg-[#C9C9C9]'],
   
     // Administrativos – Celeste claro
-    ['Administrativos', 'bg-cyan-200'],
+    ['Administrativos', 'bg-[#FFE699]'],
   ]);
 
   constructor(private http: HttpClient) {}

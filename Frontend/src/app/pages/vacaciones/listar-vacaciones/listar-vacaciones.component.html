@@ -60,8 +60,8 @@
     <tbody class="divide-y divide-gray-200">
       <tr *ngFor="let v of vacacionesFiltradas" class="hover:bg-gray-50">
         <td class="px-4 py-3 text-sm text-gray-900">{{ v.NombreTrabajador }}</td>
-        <td class="px-4 py-3 text-sm text-gray-900">{{ v.FechaInicio | date }}</td>
-        <td class="px-4 py-3 text-sm text-gray-900">{{ v.FechaFin | date }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900">{{ v.FechaInicio | date:'dd/MM/yyyy' }}</td>
+        <td class="px-4 py-3 text-sm text-gray-900">{{ v.FechaFin | date:'dd/MM/yyyy' }}</td>
         <td class="px-4 py-3 text-sm text-gray-900">{{ v.DiasTomados }}</td>
         <td class="px-4 py-3 text-center space-x-2">
           <button
